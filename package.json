@@ -1,0 +1,24 @@
+{
+  "name": "week-seven-project",
+  "version": "1.0.0",
+  "description": "Personal Stat Tracker",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jasonmgrigg/week-seven-project.git"
+  },
+  "dependencies": {
+    "express": "*",
+    "body-parser": "*",
+    "mongoose": "*"
+  },
+  "author": "Jason M. Grigg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jasonmgrigg/week-seven-project/issues"
+  },
+  "homepage": "https://github.com/jasonmgrigg/week-seven-project#readme"
+}
