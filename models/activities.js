@@ -6,13 +6,17 @@ var activitySchema = mongoose.Schema({
     type:String,
     required: true
   },
-  flights:{
+  metric:{
     type:Number,
-    required: false
+    required: true
   },
-  create_date:{
-    type: Date,
-    default: Date.now
+  metric_value:{
+    type:String,
+    required: true
+  },
+  date:{
+    type:Date,
+    required: true
   }
 });
 
@@ -38,7 +42,8 @@ module.exports.updateActivity = function(id, activity, options, callback){
   var query = {_id: id};
   var update = {
     name: activity.name,
-    flights: activity.flights,
+    metric: activity.metric,
+    metric_value: activity.metric_value,
     date: activity.date
   }
   Activity.findOneAndUpdate(query, update, options, callback);

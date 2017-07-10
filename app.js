@@ -16,6 +16,7 @@ app.get('/', function(req, res){
   res.send('Please use /api/...');
 });
 
+//Gets all activity information
 app.get('/api/activities', function(req, res){
   Activity.getActivities(function(err, activities){
     if(err){
@@ -25,6 +26,7 @@ app.get('/api/activities', function(req, res){
   });
 });
 
+//Adds an activity
 app.post('/api/activities', function(req, res){
   var activity = req.body;
   Activity.addActivity(activity, function(err, activity){
@@ -35,6 +37,7 @@ app.post('/api/activities', function(req, res){
   });
 });
 
+//Updates an activity
 app.put('/api/activities/:_id', function(req, res){
   var id = req.params._id
   var activity = req.body;
@@ -46,6 +49,7 @@ app.put('/api/activities/:_id', function(req, res){
   });
 });
 
+//Gets an activity by id
 app.get('/api/activities/:_id', function(req, res){
   Activity.getActivityById(req.params._id, function(err, activity){
     if(err){
@@ -55,6 +59,7 @@ app.get('/api/activities/:_id', function(req, res){
   });
 });
 
+//Deletes an activity by id
 app.delete('/api/activities/:_id', function(req, res){
   var id = req.params._id
   Activity.removeActivity(id, function(err, activity){
