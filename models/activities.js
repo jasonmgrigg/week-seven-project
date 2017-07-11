@@ -54,3 +54,12 @@ module.exports.removeActivity = function(id, callback){
   var query = {_id: id};
   Activity.remove(query, callback);
 }
+
+// Add stat by id
+module.exports.updateActivity = function(id, stat, options, callback){
+  var query = {_id: id};
+  var update = {
+    stat: activity.stat
+  }
+  Activity.findOneAndUpdate(query, update, options, callback);
+}

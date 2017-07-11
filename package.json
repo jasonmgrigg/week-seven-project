@@ -11,9 +11,13 @@
     "url": "git+https://github.com/jasonmgrigg/week-seven-project.git"
   },
   "dependencies": {
-    "express": "*",
+    "bcryptjs": "^2.4.3",
     "body-parser": "*",
-    "mongoose": "*"
+    "express": "*",
+    "mongoose": "*",
+    "mustache-express": "^1.2.5",
+    "passport": "^0.3.2",
+    "passport-http": "^0.3.0"
   },
   "author": "Jason M. Grigg",
   "license": "ISC",
