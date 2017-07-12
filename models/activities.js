@@ -6,12 +6,12 @@ var activitySchema = mongoose.Schema({
     type:String,
     required: true
   },
-  metric:{
-    type:Number,
+  stat:{
+    type:String,
     required: true
   },
-  metric_value:{
-    type:String,
+  stat_value:{
+    type:Number,
     required: true
   },
   date:{
@@ -32,6 +32,18 @@ module.exports.getActivityById = function(id, callback){
   Activity.findById(id, callback);
 }
 
+// Get Activity by Stat
+module.exports.getActivityByStat = function(stat, callback){
+  var query = {stat: stat};
+  Activity.find(query, callback);
+}
+
+// Get Activity by Name
+module.exports.getActivityByName = function(name, callback){
+  var query = {name: name};
+  Activity.find(query, callback);
+}
+
 // Add Actviity
 module.exports.addActivity = function(activity, callback){
   Activity.create(activity, callback);
@@ -42,8 +54,8 @@ module.exports.updateActivity = function(id, activity, options, callback){
   var query = {_id: id};
   var update = {
     name: activity.name,
-    metric: activity.metric,
-    metric_value: activity.metric_value,
+    stat: activity.stat,
+    stat_value: activity.stat_value,
     date: activity.date
   }
   Activity.findOneAndUpdate(query, update, options, callback);
@@ -53,13 +65,4 @@ module.exports.updateActivity = function(id, activity, options, callback){
 module.exports.removeActivity = function(id, callback){
   var query = {_id: id};
   Activity.remove(query, callback);
-}
-
-// Add stat by id
-module.exports.updateActivity = function(id, stat, options, callback){
-  var query = {_id: id};
-  var update = {
-    stat: activity.stat
-  }
-  Activity.findOneAndUpdate(query, update, options, callback);
 }

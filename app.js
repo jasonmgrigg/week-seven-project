@@ -19,32 +19,19 @@ mongoose.connect('mongodb://localhost:27017/stattracker');
 var db = mongoose.connection;
 
 //Authentication Section
-// app.use('/users', require('./routes/users'));
-
-// passport.use(new BasicStrategy(
-//   function(username, password, done) {
-//     User.findOne( { name: username }, function(err, user){
-//       if (user && bcrypt.compareSync(password, user.password)){
-//         return done(null, user);
-//       }
-//       return done(null, false);
-//     });
-//   }
-// ));
-
 // example of modifying new password
-var user = User.findOne({name: "paul"}, function(err, user){
-  user.password = 'test';
-  user.save(function(err){
-    if (err) {return console.log('user not saved')}
-    console.log('user saved!')
-  })
-});
+// var user = User.findOne({name: "lisa"}, function(err, user){
+//   user.password = 'test';
+//   user.save(function(err){
+//     if (err) {return console.log('user not saved')}
+//     console.log('user saved!')
+//   })
+// });
 
 passport.use(new BasicStrategy(
   function(username, password, done) {
     User.findOne({ name: username }, function(err, user){
-      console.log("Here is the User " + user);
+      // console.log("Here is the User " + user);
       if (user && bcrypt.compareSync(password, user.password)){
         return done(null, user);
       }
@@ -52,13 +39,6 @@ passport.use(new BasicStrategy(
     });
   }
 ));
-
-
-// app.get('/api/auth',
-//   passport.authenticate('basic', {session: false}), function (req, res) {
-//       res.send('You have been authenticated, ' + req.user.name);
-//   }
-// );
 
 app.get('/api/auth',
   passport.authenticate('basic', {session: false}), function (req, res) {
@@ -71,8 +51,14 @@ app.get('/', function(req, res){
   res.send('Please use /api/...');
 });
 
+app.get('/api/auth',
+  passport.authenticate('basic', {session: false}), function (req, res) {
+      res.send('You have been authenticated, ' + req.user.name);
+  }
+);
+
 //Gets all activity information
-app.get('/api/activities', function(req, res){
+app.get('/api/activities', passport.authenticate('basic', {session: false}), function(req, res){
   Activity.getActivities(function(err, activities){
     if(err){
       throw err;
@@ -82,7 +68,7 @@ app.get('/api/activities', function(req, res){
 });
 
 //Adds an activity
-app.post('/api/activities', function(req, res){
+app.post('/api/activities', passport.authenticate('basic', {session: false}), function(req, res){
   var activity = req.body;
   Activity.addActivity(activity, function(err, activity){
     if(err){
@@ -93,10 +79,10 @@ app.post('/api/activities', function(req, res){
 });
 
 //Updates an activity
-app.put('/api/activities/:_id', function(req, res){
+app.put('/api/activities/id/:_id', passport.authenticate('basic', {session: false}), function(req, res){
   var id = req.params._id
   var activity = req.body;
-  Activity.updateActivity(id, activity, {}, function(err, activity){
+  Activity.updateActivity(id, activity, function(err, activity){
     if(err){
       throw err;
     }
@@ -105,7 +91,7 @@ app.put('/api/activities/:_id', function(req, res){
 });
 
 //Gets an activity by id
-app.get('/api/activities/:_id', function(req, res){
+app.get('/api/activities/id/:_id', passport.authenticate('basic', {session: false}), function(req, res){
   Activity.getActivityById(req.params._id, function(err, activity){
     if(err){
       throw err;
@@ -114,10 +100,9 @@ app.get('/api/activities/:_id', function(req, res){
   });
 });
 
-//Deletes an activity by id
-app.delete('/api/activities/:_id', function(req, res){
-  var id = req.params._id
-  Activity.removeActivity(id, function(err, activity){
+// //Gets an activity by stat
+app.get('/api/activities/stat/:stat', passport.authenticate('basic', {session: false}), function(req, res){
+  Activity.getActivityByStat(req.params.stat, function(err, activity){
     if(err){
       throw err;
     }
@@ -125,15 +110,24 @@ app.delete('/api/activities/:_id', function(req, res){
   });
 });
 
-//Adds stats to an activity by ID
-app.put('/api/activities/:_id/stats', function(req, res){
-  var id = req.params._id
-  var stat = req.body;
-  Stat.updateStat(id, stat, {}, function(err, stat){
+// //Gets an activity by name
+app.get('/api/activities/name/:name', passport.authenticate('basic', {session: false}), function(req, res){
+  Activity.getActivityByName(req.params.name, function(err, activity){
     if(err){
       throw err;
     }
-    res.json(stat);
+    res.json(activity);
+  });
+});
+
+//Deletes an activity by id
+app.delete('/api/activities/:_id', passport.authenticate('basic', {session: false}), function(req, res){
+  var id = req.params._id
+  Activity.removeActivity(id, function(err, activity){
+    if(err){
+      throw err;
+    }
+    res.json(activity);
   });
 });
 
