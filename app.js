@@ -11,23 +11,12 @@ const Activity = require('./models/activities.js');
 
 app.use(bodyParser.json());
 
-// Activity = require('./models/activities');
-// Stat = require('./models/stats');
-
 // Connect to mongoose
 mongoose.connect('mongodb://localhost:27017/stattracker');
 var db = mongoose.connection;
 
-//Authentication Section
-// example of modifying new password
-// var user = User.findOne({name: "lisa"}, function(err, user){
-//   user.password = 'test';
-//   user.save(function(err){
-//     if (err) {return console.log('user not saved')}
-//     console.log('user saved!')
-//   })
-// });
 
+//Authentication Section
 passport.use(new BasicStrategy(
   function(username, password, done) {
     User.findOne({ name: username }, function(err, user){
@@ -45,17 +34,24 @@ app.get('/api/auth',
       res.send('You have been authenticated, ' + req.user.name);
   }
 );
+//End of Authentication Section
+
 
 //Place holder if you don't go to the correct endpoint to start
 app.get('/', function(req, res){
   res.send('Please use /api/...');
 });
+//End of place holder
 
+
+//Authentication to endpoint, just returns "You have been authenticated"
 app.get('/api/auth',
   passport.authenticate('basic', {session: false}), function (req, res) {
       res.send('You have been authenticated, ' + req.user.name);
   }
 );
+//End of authentication endpoint
+
 
 //Gets all activity information
 app.get('/api/activities', passport.authenticate('basic', {session: false}), function(req, res){
@@ -66,6 +62,8 @@ app.get('/api/activities', passport.authenticate('basic', {session: false}), fun
     res.json(activities);
   });
 });
+//End of get all activity
+
 
 //Adds an activity
 app.post('/api/activities', passport.authenticate('basic', {session: false}), function(req, res){
@@ -77,6 +75,8 @@ app.post('/api/activities', passport.authenticate('basic', {session: false}), fu
     res.json(activity);
   });
 });
+//End of adds an activity
+
 
 //Updates an activity
 app.put('/api/activities/id/:_id', passport.authenticate('basic', {session: false}), function(req, res){
@@ -89,6 +89,8 @@ app.put('/api/activities/id/:_id', passport.authenticate('basic', {session: fals
     res.json(activity);
   });
 });
+//End of updates an activity
+
 
 //Gets an activity by id
 app.get('/api/activities/id/:_id', passport.authenticate('basic', {session: false}), function(req, res){
@@ -99,8 +101,10 @@ app.get('/api/activities/id/:_id', passport.authenticate('basic', {session: fals
     res.json(activity);
   });
 });
+//End of gets an activity by id
 
-// //Gets an activity by stat
+
+//Gets an activity by stat
 app.get('/api/activities/stat/:stat', passport.authenticate('basic', {session: false}), function(req, res){
   Activity.getActivityByStat(req.params.stat, function(err, activity){
     if(err){
@@ -109,8 +113,10 @@ app.get('/api/activities/stat/:stat', passport.authenticate('basic', {session: f
     res.json(activity);
   });
 });
+//Gets an activity by stat
 
-// //Gets an activity by name
+
+//Gets an activity by name
 app.get('/api/activities/name/:name', passport.authenticate('basic', {session: false}), function(req, res){
   Activity.getActivityByName(req.params.name, function(err, activity){
     if(err){
@@ -119,6 +125,8 @@ app.get('/api/activities/name/:name', passport.authenticate('basic', {session: f
     res.json(activity);
   });
 });
+//End of gets an activity by name
+
 
 //Deletes an activity by id
 app.delete('/api/activities/:_id', passport.authenticate('basic', {session: false}), function(req, res){
@@ -130,8 +138,7 @@ app.delete('/api/activities/:_id', passport.authenticate('basic', {session: fals
     res.json(activity);
   });
 });
-
-
+//End of delets an activity by id
 
 
 app.listen(3000);
