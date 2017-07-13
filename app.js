@@ -129,7 +129,7 @@ app.get('/api/activities/name/:name', passport.authenticate('basic', {session: f
 
 
 //Deletes an activity by id
-app.delete('/api/activities/:_id', passport.authenticate('basic', {session: false}), function(req, res){
+app.delete('/api/activities/id/:_id', passport.authenticate('basic', {session: false}), function(req, res){
   var id = req.params._id
   Activity.removeActivity(id, function(err, activity){
     if(err){
