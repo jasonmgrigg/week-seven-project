@@ -92,6 +92,32 @@ app.put('/api/activities/id/:_id', passport.authenticate('basic', {session: fals
 //End of updates an activity
 
 
+//Updates an activity by date and ID
+app.put('/api/activities/addtodate/:_id/:date', passport.authenticate('basic', {session: false}), function(req, res){
+  var id = req.params._id
+  var activity = req.body;
+  Activity.updateActivity(id, activity, function(err, activity){
+    if(err){
+      throw err;
+    }
+    res.json(activity);
+  });
+});
+//End of updates an activity
+
+
+//Gets an activity by date and id
+app.get('/api/activities/addtodate/:_id/:date', passport.authenticate('basic', {session: false}), function(req, res){
+  Activity.getActivityByDateId(req.params._id, function(err, activity){
+    if(err){
+      throw err;
+    }
+    res.json(activity);
+  });
+});
+//End of gets an activity by date and id
+
+
 //Gets an activity by id
 app.get('/api/activities/id/:_id', passport.authenticate('basic', {session: false}), function(req, res){
   Activity.getActivityById(req.params._id, function(err, activity){
@@ -126,6 +152,18 @@ app.get('/api/activities/name/:name', passport.authenticate('basic', {session: f
   });
 });
 //End of gets an activity by name
+
+
+//Gets an activity by date
+app.get('/api/activities/date/:date', passport.authenticate('basic', {session: false}), function(req, res){
+  Activity.getActivityByDate(req.params.date, function(err, activity){
+    if(err){
+      throw err;
+    }
+    res.json(activity);
+  });
+});
+//End of gets an activity by date
 
 
 //Deletes an activity by id

@@ -16,7 +16,7 @@ var activitySchema = mongoose.Schema({
   },
   date:{
     type:Date,
-    required: true
+    default: Date.now
   }
 });
 
@@ -44,6 +44,12 @@ module.exports.getActivityByName = function(name, callback){
   Activity.find(query, callback);
 }
 
+// Get Activity by Date
+module.exports.getActivityByDate = function(date, callback){
+  var query = {date: date};
+  Activity.find(query, callback);
+}
+
 // Add Actviity
 module.exports.addActivity = function(activity, callback){
   Activity.create(activity, callback);
@@ -59,6 +65,24 @@ module.exports.updateActivity = function(id, activity, options, callback){
     date: activity.date
   }
   Activity.findOneAndUpdate(query, update, options, callback);
+}
+
+// Update Actviity by id and date
+module.exports.updateActivity = function(id, date, activity, options, callback){
+  var query = {_id: id, date:date};
+  var update = {
+    name: activity.name,
+    stat: activity.stat,
+    stat_value: activity.stat_value,
+    date: activity.date
+  }
+  Activity.findOneAndUpdate(query, update, options, callback);
+}
+
+// Get Activity by Date and ID
+module.exports.getActivityByDateId = function(date, id, callback){
+  var query = {date: date, _id: id};
+  Activity.find(query, callback);
 }
 
 // Delete Actviity by id
